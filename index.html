@@ -1,0 +1,38 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocketRTC Client</title>
+    <script src="http://localhost:8001/socketrtc.js"></script>
+   
+</head>
+<body>
+    <h1>SocketRTC Client</h1>
+    <div class="main">
+        <!-- <button id="startButton" >Start</button>
+        <button id="stopButton">Stop</button> -->
+        <input id="message" type="text" class="message" placeholder="Enter message" />
+        <button id="sendButton">Send</button>
+    </div>
+    <script type="module">
+        let rtc = null;
+        let id;
+        document.addEventListener('DOMContentLoaded', () => {
+            id = 'user' + Math.floor(Math.random() * 1000);
+            console.log(id)
+            rtc = new SocketRTC({url: "http://localhost:8001/"}, id, {initiator: true});
+
+            const sendButton = document.getElementById('sendButton');
+            sendButton.addEventListener('click', onSend);
+        });
+        function onSend() {
+            const message = document.getElementsByClassName('message')[0].value;
+            rtc.send(message);
+        }
+    </script>
+
+</body>
+
+</html>
