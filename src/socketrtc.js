@@ -3,7 +3,6 @@ const SimplePeer = require('simple-peer');
 class SocketRTC {
     constructor(socketConfig, id = "", rtcconfig = {}) {
 
-        this.peer = null;
         this.id = id;
         this.socket = null;
         if (typeof window === 'undefined') {
@@ -24,36 +23,53 @@ class SocketRTC {
     }
 
     initializeServer() {
+        const clients = {};
         this.io.on('connection', (socket) => {
             this.socket = socket;
-            this.peer = new SimplePeer(this.config);
-            // this.clients[this.id] = this.peer;
+            const peer = new SimplePeer(this.config);
+            clients[socket.id] = peer;
+
             console.log('socket connected', socket.id);
-            this.peer.on('connect', () => {
+            peer.on('connect', () => {
                 console.log('peerconnection established');
                 // peer.send(JSON.stringify({ from: 'Server', data: 'Hello from Node server!' }));
             });
 
-            this.peer.on('signal', this._onPeerSignal.bind(this));
+            peer.on('signal', (data) => {
+                this.socket.emit('signal', data);
+            });
 
-            this.peer.on('data', (data) => {
+            peer.on('data', (data) => {
                 const pdata = JSON.parse(data);
                 // console.log(Object.keys(this.clients))
-                Object.keys(this.clients).forEach((clientId) => {
-                    if (clientId !== pdata.from) {
+                const allClients = Object.keys(clients);
+
+                for (let i = 0; i < allClients.length; i++) {
+                    if (allClients[i] !== socket.id) {
                         // console.log(`Sending message from ${clientId} to ${pdata.from}`, this.clients[clientId])
-                        // this.clients[clientId].send(data);
+                        try {
+                            clients[allClients[i]].send(data);
+                        } catch (error) {
+                            console.log(`error sending to ${allClients[i]}`, error.message)
+                        }
                     }
-                });
+                };
             });
 
-            this.peer.on('close', () => {
+            peer.on('close', () => {
                 console.log('peerconnection closed');
-                delete this.clients[this.id];
+                delete this.clients[socket.id];
             });
 
-            socket.on('signal', this._onSocketSignal.bind(this));
-            
+            socket.on('signal', (data) => {
+                peer.signal(data);
+            });
+
+            socket.on("disconnect", async (event) => {
+                console.log('socket disconnected', event);
+                delete clients[socket.id];
+                peer.destroy();
+            })
         })
     }
 
@@ -63,41 +79,41 @@ class SocketRTC {
         this.socket.on('connect', () => {
             console.log('socket connected');
         });
-        this.peer = new SimplePeer(this.config);
+        const peer = new SimplePeer(this.config);
 
-        this.peer.on('signal', this._onPeerSignal.bind(this));
+        console.log(peer)
+        peer.on('signal', (data) => {
+            this.socket.emit('signal', data);
+        });
 
-        this.peer.on('connect', () => {
-            console.log(`peer connection established`, this.peer.send);
+        peer.on('connect', () => {
+            console.log(`peer connection established`);
             // this.peer.send(JSON.stringify({ from: this.clientId, data: 'Hello from Node server!' }));
         });
 
-        this.peer.on('data', (data) => {
+        peer.on('data', (data) => {
             const pdata = JSON.parse(data)
             console.log(`Received message from ${pdata.from}: ${pdata.data}`);
             // chatBox.value += 'Peer: ' + data + '\n';
         });
 
-        this.peer.on('close', () => {
-            this.peer.destroy();
+        peer.on('close', () => {
+            peer.destroy();
         });
-        this.socket.on('signal', this._onSocketSignal.bind(this));
-    }
 
-    send(message) {
-        if (this.peer && this.peer.connected) {
-            this.peer.send(JSON.stringify({ from: this.id, data: message }));
-        } else {
-            console.error('Peer is not connected');
+        this.socket.on('signal', (data) => {
+            peer.signal(data);
+        });
+
+        const sendMessage = (message) => {
+            if (peer && peer.connected) {
+                peer.send(JSON.stringify({ from: this.id, data: message }));
+            } else {
+                console.error('Peer is not connected');
+            }
         }
-    }
 
-    _onPeerSignal(data) {
-        this.socket.emit('signal', data);
-    }
-
-    _onSocketSignal(data) {
-        this.peer.signal(data);
+        this.send = sendMessage;
     }
 
 }
