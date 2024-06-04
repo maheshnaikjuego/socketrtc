@@ -5,6 +5,7 @@ class SocketRTC {
 
         this.id = id;
         this.socket = null;
+        this.events = {};
         if (typeof window === 'undefined') {
             // Node.js environment
             const wrtc = require('wrtc');
@@ -19,6 +20,28 @@ class SocketRTC {
             this.initializeClient();
         }
 
+    }
+
+    /**
+     * Adds a listener for the specified event.
+     *
+     * @param {string} event - The event to listen for.
+     * @param {Function} listener - The function to execute when the event is triggered.
+     */
+    on(event, listener) {
+        // If the event doesn't exist in the events object, create an empty array for it
+        if (!this.events[event]) {
+            this.events[event] = [];
+        }
+        
+        // Add the listener to the event's array of listeners
+        this.events[event].push(listener);
+    }
+
+    emit(event, ...args) {
+        if (this.events[event]) {
+            this.events[event].forEach(callback => callback(...args));
+        }
     }
 
     initializeServer() {
