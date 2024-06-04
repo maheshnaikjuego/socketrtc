@@ -51,7 +51,7 @@ class SocketRTC {
             const peer = new SimplePeer(this.config);
             clients[socket.id] = peer;
 
-            console.log('socket connected', socket.id);
+            // console.log('socket connected', socket.id);
             peer.on('connect', () => {
                 console.log('peerconnection established');
                 // peer.send(JSON.stringify({ from: 'Server', data: 'Hello from Node server!' }));
@@ -99,11 +99,11 @@ class SocketRTC {
         // const clients = {};
 
         this.socket.on('connect', () => {
-            console.log('socket connected');
+            // console.log('socket connected');
         });
         const peer = new SimplePeer(this.config);
 
-        console.log(peer)
+        // console.log(peer)
         peer.on('signal', (data) => {
             this.socket.emit('signal', data);
         });
