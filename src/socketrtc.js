@@ -13,7 +13,7 @@ class SocketRTC {
             this.initializeServer();
         } else {
             // Browser environment
-            this.config = rtcconfig;
+            this.config = Object.assign({initiator: true}, rtcconfig);
             const socketioclient = require('socket.io-client');
             this.socket = socketioclient(socketConfig.url);
             this.initializeClient();
