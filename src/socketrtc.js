@@ -10,7 +10,6 @@ class SocketRTC {
             const wrtc = require('wrtc');
             this.config = Object.assign({ wrtc: wrtc }, rtcconfig);
             this.io = require('socket.io')(socketConfig.server);
-            this.clients = {};
             this.initializeServer();
         } else {
             // Browser environment
@@ -58,7 +57,7 @@ class SocketRTC {
 
             peer.on('close', () => {
                 console.log('peerconnection closed');
-                delete this.clients[socket.id];
+                delete clients[socket.id];
             });
 
             socket.on('signal', (data) => {
