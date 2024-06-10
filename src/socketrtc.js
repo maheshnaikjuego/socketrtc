@@ -16,7 +16,9 @@ class SocketRTC {
             // Browser environment
             this.config = Object.assign({initiator: true}, rtcconfig);
             const socketioclient = require('socket.io-client');
-            this.socket = socketioclient(socketConfig.url);
+            this.socket = socketioclient(socketConfig.url, {query: {
+                customID: this.id
+              }});
             this.initializeClient();
         }
 
@@ -49,7 +51,8 @@ class SocketRTC {
         this.io.on('connection', (socket) => {
             this.socket = socket;
             const peer = new SimplePeer(this.config);
-            clients[socket.id] = peer;
+            const id = socket.handshake.query['customID'];
+            clients[id] = peer;
 
             // console.log('socket connected', socket.id);
             peer.on('connect', () => {
@@ -80,7 +83,7 @@ class SocketRTC {
 
             peer.on('close', () => {
                 console.log('peerconnection closed');
-                delete clients[socket.id];
+                delete clients[id];
             });
 
             socket.on('signal', (data) => {
@@ -89,7 +92,7 @@ class SocketRTC {
 
             socket.on("disconnect", async (event) => {
                 console.log('socket disconnected', event);
-                delete clients[socket.id];
+                delete clients[id];
                 peer.destroy();
             })
         })
