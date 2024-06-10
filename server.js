@@ -19,6 +19,12 @@ socketRTC.on('disconnect', (data) => {
     console.log('peer connection disconnected');
 })
 
+socketRTC.on('message', (data) => {
+    console.log(`data: ${data}`)
+    // socketRTC.emit('message', data)
+    socketRTC.broadcast(data)
+})
+
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });

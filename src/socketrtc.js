@@ -64,20 +64,7 @@ class SocketRTC {
             });
 
             peer.on('data', (data) => {
-                const pdata = JSON.parse(data);
-                // console.log(Object.keys(this.clients))
-                const allClients = Object.keys(clients);
-
-                for (let i = 0; i < allClients.length; i++) {
-                    if (allClients[i] !== socket.id) {
-                        // console.log(`Sending message from ${clientId} to ${pdata.from}`, this.clients[clientId])
-                        try {
-                            clients[allClients[i]].send(data);
-                        } catch (error) {
-                            console.log(`error sending to ${allClients[i]}`, error.message)
-                        }
-                    }
-                };
+                this.emit('message', data);
             });
 
             peer.on('close', () => {
@@ -98,7 +85,28 @@ class SocketRTC {
                 delete clients[id];
                 peer.destroy();
             })
+
+            socket.on('error', (err) => {
+                this.emit('error', err);
+            });
         })
+
+        const sendMessage = (data) => {
+            const pdata = JSON.parse(data);
+            const allClients = Object.keys(clients);
+
+            for (let i = 0; i < allClients.length; i++) {
+                if (allClients[i] !== pdata.from) {
+                    // console.log(`Sending message from ${pdata.from} to ${allClients[i]}`)
+                    try {
+                        clients[allClients[i]].send(data);
+                    } catch (error) {
+                        console.log(`error sending to ${allClients[i]}`, error.message)
+                    }
+                }
+            };
+        }
+        this.broadcast = sendMessage;
     }
 
     initializeClient() {
@@ -120,7 +128,8 @@ class SocketRTC {
 
         peer.on('data', (data) => {
             const pdata = JSON.parse(data)
-            console.log(`Received message from ${pdata.from}: ${pdata.data}`);
+            this.emit('message', pdata);
+            // console.log(`Received message from ${pdata.from}: ${pdata.data}`);
             // chatBox.value += 'Peer: ' + data + '\n';
         });
 

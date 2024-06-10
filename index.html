@@ -27,6 +27,7 @@
             rtc.on('connect', onConnect);
             rtc.on('disconnect', onDisconnect);
 
+            rtc.on('message', onMessageRecieved);
 
             rtc.on('error', onError);
 
@@ -43,6 +44,9 @@
 
         function onDisconnect() {
             console.log('disconnected')
+        }
+        function onMessageRecieved(message) {
+            console.log(message)
         }
         function onError(err) {
             console.error(err)
