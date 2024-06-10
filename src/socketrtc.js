@@ -56,8 +56,7 @@ class SocketRTC {
 
             // console.log('socket connected', socket.id);
             peer.on('connect', () => {
-                console.log('peerconnection established');
-                // peer.send(JSON.stringify({ from: 'Server', data: 'Hello from Node server!' }));
+                this.emit('connect', {id, pc: peer});
             });
 
             peer.on('signal', (data) => {
@@ -86,6 +85,10 @@ class SocketRTC {
                 delete clients[id];
             });
 
+            peer.on('error', (err) => {
+                this.emit('error', err);
+            })
+
             socket.on('signal', (data) => {
                 peer.signal(data);
             });
@@ -112,8 +115,7 @@ class SocketRTC {
         });
 
         peer.on('connect', () => {
-            console.log(`peer connection established`);
-            // this.peer.send(JSON.stringify({ from: this.clientId, data: 'Hello from Node server!' }));
+            this.emit('connect');
         });
 
         peer.on('data', (data) => {
@@ -126,8 +128,20 @@ class SocketRTC {
             peer.destroy();
         });
 
+        peer.on('error', (err) => {
+            this.emit('error', err);
+        })
+
         this.socket.on('signal', (data) => {
             peer.signal(data);
+        });
+
+        this.socket.on('disconnect', (event) => {
+            this.emit('disconnect', event);
+        });
+
+        this.socket.on('error', (err) => {
+            this.emit('error', err);
         });
 
         const sendMessage = (message) => {

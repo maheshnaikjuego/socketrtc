@@ -24,12 +24,28 @@
             console.log(id)
             rtc = new SocketRTC({url: "http://localhost:8001/"}, id);
 
+            rtc.on('connect', onConnect);
+            rtc.on('disconnect', onDisconnect);
+
+
+            rtc.on('error', onError);
+
             const sendButton = document.getElementById('sendButton');
             sendButton.addEventListener('click', onSend);
         });
         function onSend() {
             const message = document.getElementsByClassName('message')[0].value;
             rtc.send(message);
+        }
+        function onConnect() {
+            console.log('connected')
+        }
+
+        function onDisconnect() {
+            console.log('disconnected')
+        }
+        function onError(err) {
+            console.error(err)
         }
     </script>
 
