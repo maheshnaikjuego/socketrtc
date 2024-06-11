@@ -10,7 +10,7 @@ const PORT = 8001;
 
 app.use(express.static(path.join(__dirname, 'dist')));
 
-const socketRTC = new SocketRTC({server}, 'server')
+const socketRTC = new SocketRTC({ server })
 socketRTC.on('connect', (data) => {
     console.log('peer connection established: ', data.id);
 })
