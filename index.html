@@ -37,12 +37,22 @@
         <div id="chat"></div>
     </div>
     <script type="module">
+        const script = document.createElement('script');
+        const protocol = window.location.protocol;
+        const host = window.location.hostname;
+        const port = '8001';
+        const url = `${protocol}//${host}:${port}`;
+        script.src = `${url}/socketrtc.js`;
+        document.head.appendChild(script);
+
+
         let rtc = null;
         let id;
-        document.addEventListener('DOMContentLoaded', () => {
+        let chat = document.getElementById('chat');
+        script.onload = () => {
             id = 'user' + Math.floor(Math.random() * 1000);
             console.log(id)
-            rtc = new SocketRTC({url: "http://localhost:8001/"}, id);
+            rtc = new SocketRTC({ url }, id);
 
             rtc.on('connect', onConnect);
             rtc.on('disconnect', onDisconnect);
