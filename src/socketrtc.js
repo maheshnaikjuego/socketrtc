@@ -1,18 +1,13 @@
 const SimplePeer = require('simple-peer');
 
+const IS_BROWSER = typeof window != 'undefined';
 class SocketRTC {
     constructor(socketConfig, id = "", rtcconfig = {}) {
 
         this.id = id;
         this.socket = null;
         this.events = {};
-        if (typeof window === 'undefined') {
-            // Node.js environment
-            const wrtc = require('wrtc');
-            this.config = Object.assign({ wrtc: wrtc }, rtcconfig);
-            this.io = require('socket.io')(socketConfig.server);
-            this.initializeServer();
-        } else {
+        if (IS_BROWSER) {
             // Browser environment
             this.config = Object.assign({initiator: true}, rtcconfig);
             const socketioclient = require('socket.io-client');
@@ -20,6 +15,12 @@ class SocketRTC {
                 customID: this.id
               }});
             this.initializeClient();
+        } else {
+            // Node.js environment
+            const wrtc = require('wrtc');
+            this.config = Object.assign({ wrtc: wrtc }, rtcconfig);
+            this.io = require('socket.io')(socketConfig.server);
+            this.initializeServer();
         }
 
     }
