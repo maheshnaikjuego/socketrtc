@@ -65,7 +65,8 @@ class SocketRTC {
             });
 
             peer.on('data', (data) => {
-                this.emit('message', data);
+                // this.emit('message', data);
+                sendMessage(data);
             });
 
             peer.on('close', () => {
@@ -106,8 +107,22 @@ class SocketRTC {
                     }
                 }
             };
+        const sendMessage = (data) => {
+            const pdata = JSON.parse(data);
+            const allClients = Object.keys(clients);
+
+            for (let i = 0; i < allClients.length; i++) {
+                // if (allClients[i] !== pdata.from) {
+                    // console.log(`Sending message from ${pdata.sender} to ${allClients[i]}`)
+                    try {
+                        clients[allClients[i]].send(data);
+                    } catch (error) {
+                        console.log(`error sending to ${allClients[i]}`, error.message)
+                    }
+                // }
+            };
         }
-        this.broadcast = sendMessage;
+        this.send = sendMessage;
     }
 
     initializeClient() {
