@@ -5,6 +5,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SocketRTC Client</title>
+    <style>
+        #chat {
+            width: 100%;
+            max-width: 600px;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 10px;
+            height: 400px;
+            overflow-y: scroll;
+        }
+        .message {
+            padding: 5px;
+            margin: 5px 0;
+        }
+        .received {
+            text-align: left;
+            background-color: #c7e1ff;
+        }
+    </style>
     <script src="http://localhost:8001/socketrtc.js"></script>
    
 </head>
@@ -36,7 +55,9 @@
         });
         function onSend() {
             const message = document.getElementsByClassName('message')[0].value;
-            rtc.send(message);
+            rtc.send(JSON.stringify({ sender: id, message }));
+            displayMessage('You', message);
+            // rtc.emit('message', message)
         }
         function onConnect() {
             console.log('connected')
@@ -45,11 +66,24 @@
         function onDisconnect() {
             console.log('disconnected')
         }
-        function onMessageRecieved(message) {
-            console.log(message)
+
+        function onMessageRecieved(data) {
+            // console.log(message)
+            const { sender, message } = JSON.parse(data);
+            if(message && sender !== id)
+                displayMessage(sender, message)
         }
+
         function onError(err) {
             console.error(err)
+        }
+
+        function displayMessage(sender, message) {
+            let messageElement = document.createElement('div');
+            messageElement.classList.add('message', 'received');
+            messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
+            chat.appendChild(messageElement);
+            chat.scrollTop = chat.scrollHeight;
         }
     </script>
 
