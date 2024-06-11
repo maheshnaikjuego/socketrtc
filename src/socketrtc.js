@@ -143,8 +143,8 @@ class SocketRTC {
         });
 
         peer.on('data', (data) => {
-            const pdata = JSON.parse(data)
-            this.emit('message', pdata);
+            // const pdata = JSON.parse(data)
+            this.emit('message', data);
             // console.log(`Received message from ${pdata.from}: ${pdata.data}`);
             // chatBox.value += 'Peer: ' + data + '\n';
         });
@@ -171,7 +171,7 @@ class SocketRTC {
 
         const sendMessage = (message) => {
             if (peer && peer.connected) {
-                peer.send(JSON.stringify({ from: this.id, data: message }));
+                peer.send(message);
             } else {
                 console.error('Peer is not connected');
             }
