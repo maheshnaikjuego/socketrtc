@@ -74,26 +74,32 @@
             console.log('connected')
         }
 
+        // Called when the client successfully disconnects from the server
         function onDisconnect() {
             console.log('disconnected')
         }
 
+        // Called when the client receives a message
         function onMessageRecieved(data) {
             // console.log(message)
             const { sender, message } = JSON.parse(data);
+            // Display the message if it's from another peer
             if(message && sender !== id)
                 displayMessage(sender, message)
         }
 
+        // Called when an error occurs in the client
         function onError(err) {
             console.error(err)
         }
 
+        // Displays a message in the chat area of the UI
         function displayMessage(sender, message) {
             let messageElement = document.createElement('div');
             messageElement.classList.add('message', 'received');
             messageElement.innerHTML = `<strong>${sender}:</strong> ${message}`;
             chat.appendChild(messageElement);
+            // Ensure the latest message is in view
             chat.scrollTop = chat.scrollHeight;
         }
     </script>
