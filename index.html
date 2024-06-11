@@ -30,8 +30,8 @@
 <body>
     <h1>SocketRTC Client</h1>
     <div class="main">
-        <!-- <button id="startButton" >Start</button>
-        <button id="stopButton">Stop</button> -->
+        <!-- <button id="connect" >Connet</button>
+        <button id="disconnect">Disconnect</button> -->
         <input id="message" type="text" class="message" placeholder="Enter message" />
         <button id="sendButton">Send</button>
         <div id="chat"></div>
@@ -63,7 +63,7 @@
 
             const sendButton = document.getElementById('sendButton');
             sendButton.addEventListener('click', onSend);
-        });
+        };
         function onSend() {
             const message = document.getElementsByClassName('message')[0].value;
             rtc.send(JSON.stringify({ sender: id, message }));
