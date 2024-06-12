@@ -83,7 +83,7 @@ class SocketRTC {
             });
 
             socket.on("disconnect", async (event) => {
-                console.log('socket disconnected', event);
+                this.emit('disconnect', event);
                 delete clients[id];
                 peer.destroy();
             })

@@ -16,7 +16,7 @@ socketRTC.on('connect', (data) => {
 })
 
 socketRTC.on('disconnect', (data) => {
-    console.log('peer connection disconnected');
+    console.log('peer connection disconnected', data);
 })
 
 // This event listener is bound to the 'message' event on the socketRTC object.
