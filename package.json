@@ -15,7 +15,10 @@
   "keywords": [
     "webrtc",
     "datachannel",
-    "p2p"
+    "data-channel",
+    "webrtc-data-channel",
+    "p2p",
+    "peer-to-peer"
   ],
   "author": "Mahesh Naik",
   "license": "ISC",
