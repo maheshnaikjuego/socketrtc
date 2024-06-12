@@ -12,7 +12,11 @@
     "start": "node test/server.js",
     "test": "cd test && npm run start"
   },
-  "keywords": [],
+  "keywords": [
+    "webrtc",
+    "datachannel",
+    "p2p"
+  ],
   "author": "Mahesh Naik",
   "license": "ISC",
   "homepage": "https://github.com/maheshnaikjuego/socketrtc#readme",
