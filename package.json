@@ -1,6 +1,6 @@
 {
   "name": "socket-rtc",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "src/socketrtc.js",
   "repository": {
