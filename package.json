@@ -2,7 +2,7 @@
   "name": "socket-rtc",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/socketrtc.js",
   "scripts": {
     "build": "webpack",
     "start": "node test/server.js",
