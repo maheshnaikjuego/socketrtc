@@ -65,7 +65,7 @@ class SocketRTC {
             });
 
             peer.on('data', (data) => {
-                // this.emit('message', data);
+                this.emit('message', data);
                 sendMessage(data);
             });
 
