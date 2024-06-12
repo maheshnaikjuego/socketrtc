@@ -1,14 +1,14 @@
 const express = require('express');
 const http = require('http');
 const path = require('path');
-const SocketRTC = require('./src/socketrtc');
+const SocketRTC = require('../src/socketrtc');
 
 const app = express();
 const server = http.createServer(app);
 
 const PORT = 8001;
 
-app.use(express.static(path.join(__dirname, 'dist')));
+app.use(express.static(path.join(__dirname, '../dist')));
 
 const socketRTC = new SocketRTC({ server })
 socketRTC.on('connect', (data) => {
