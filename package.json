@@ -3,14 +3,19 @@
   "version": "1.0.0",
   "description": "",
   "main": "src/socketrtc.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/maheshnaikjuego/socketrtc"
+  },
   "scripts": {
     "build": "webpack",
     "start": "node test/server.js",
     "test": "cd test && npm run start"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mahesh Naik",
   "license": "ISC",
+  "homepage": "https://github.com/maheshnaikjuego/socketrtc#readme",
   "dependencies": {
     "simple-peer": "^9.11.1",
     "socket.io": "^4.7.5",
