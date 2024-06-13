@@ -11,10 +11,9 @@ SocketRTC is a library that combines WebRTC and WebSocket to facilitate peer-to-
 
 ## Installation
 
-First, ensure you have Node.js installed. Then, install the necessary dependencies:
+First, ensure you have Node.js installed. Then, install the package as shown below
 
 ```shell
-npm install -g @mapbox/node-pre-gyp
 npm install socket-rtc
 ```
 This package works in the browser with [browserify](https://browserify.org). 
