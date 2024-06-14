@@ -49,9 +49,8 @@
         let id;
         let chat = document.getElementById('chat');
         script.onload = () => {
-            id = 'user' + Math.floor(Math.random() * 1000);
             console.log(id)
-            rtc = new SocketRTC({ url }, id);
+            rtc = new SocketRTC({ url });
 
             rtc.on('connect', onConnect);
             rtc.on('disconnect', onDisconnect);
@@ -69,8 +68,9 @@
             displayMessage('You', message);
             // rtc.emit('message', message)
         }
-        function onConnect() {
-            console.log('connected')
+        function onConnect(uid) {
+            id = uid
+            console.log('connected: ', id)
         }
 
         // Called when the client successfully disconnects from the server
