@@ -1,6 +1,10 @@
 # SocketRTC
 
-SocketRTC is a library that combines WebRTC and WebSocket to facilitate peer-to-peer communication. It allows for real-time communication between browsers and Node.js environments using WebRTC for direct peer-to-peer connections and WebSocket for signaling.
+SocketRTC is a library that combines WebRTC and Socket.IO to facilitate real-time communication. This library uses UDP protocol for data transfer using WebRTC ensuring low-latency and efficient communication. 
+
+This library provides an interface identical to Socket.IO, making it easy for users familiar with socket.io to use.
+
+<!-- It allows for communication between browsers and Node.js environments using WebRTC for direct connections and Socket.IO for signaling.  -->
 
 ## Features
 
