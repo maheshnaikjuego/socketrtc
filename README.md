@@ -114,3 +114,9 @@ browserify main.js -o bundle.js
 </html>
 
 ```
+
+
+# Use Case
+This library is ideal for scenarios where data needs to be sent quickly without the overhead of ensuring perfect delivery, such as:
+
+- **Multiplayer application**: In multiplayer applications where player positions need to be communicated to all other players in real-time. Using UDP, updates can be sent quickly without worrying about packet loss or ordering, ensuring smooth gameplay even if some packets are dropped.
