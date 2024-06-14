@@ -2,18 +2,15 @@ const SimplePeer = require('simple-peer');
 
 const IS_BROWSER = typeof window != 'undefined';
 class SocketRTC {
-    constructor(socketConfig, id = "", rtcconfig = {}) {
+    constructor(socketConfig, rtcconfig = {}) {
 
-        this.id = id;
         this.socket = null;
         this.events = {};
         if (IS_BROWSER) {
             // Browser environment
             this.config = Object.assign({initiator: true}, rtcconfig);
             const socketioclient = require('socket.io-client');
-            this.socket = socketioclient(socketConfig.url, {query: {
-                customID: this.id
-              }});
+            this.socket = socketioclient(socketConfig.url);
             this.initializeClient();
         } else {
             // Node.js environment
@@ -52,7 +49,7 @@ class SocketRTC {
         this.io.on('connection', (socket) => {
             this.socket = socket;
             const peer = new SimplePeer(this.config);
-            const id = socket.handshake.query['customID'];
+            const id = socket.id;
             clients[id] = peer;
 
             // console.log('socket connected', socket.id);
@@ -147,7 +144,7 @@ class SocketRTC {
         });
 
         peer.on('connect', () => {
-            this.emit('connect');
+            this.emit('connect', this.socket.id);
         });
 
         peer.on('data', (data) => {
