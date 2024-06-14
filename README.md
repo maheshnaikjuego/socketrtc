@@ -69,12 +69,10 @@ npm install -g browserify
 const SocketRTC = require('socket-rtc');
 
 let rtc = null;
-let id;
 
-id = 'user' + Math.floor(Math.random() * 10000);
-rtc = new SocketRTC({ url: 'http://localhost:8002' }, id);
+rtc = new SocketRTC({ url: 'http://localhost:8002' });
 
-rtc.on('connect', () => {
+rtc.on('connect', (id) => {
     console.log('connected');
     rtc.send(JSON.stringify({ from: id, data: 'Hello, Peer!' }));
 });
@@ -83,8 +81,7 @@ rtc.on('disconnect', () => {
 });
 
 rtc.on('message', (data) => {
-    if(JSON.parse(data).from !== id)
-        console.log(`message received: ${JSON.parse(data).data}`);
+    console.log(`message received: ${JSON.parse(data).data}`);
 });
 
 rtc.on('error', (err) => {
