@@ -93,10 +93,15 @@ class SocketRTC {
             });
         })
 
-        const sendMessage = (data) => {
+        const sendMessage = (data, to = null) => {
             const pdata = JSON.parse(data);
             const allClients = Object.keys(clients);
 
+            if(to != null) {
+                if(clients[to])
+                    clients[to].send(data);
+                return;
+            }
             for (let i = 0; i < allClients.length; i++) {
                 if (allClients[i] !== pdata.sender) {
                     // console.log(`Sending message from ${pdata.sender} to ${allClients[i]}`)
