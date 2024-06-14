@@ -98,14 +98,14 @@ class SocketRTC {
             const allClients = Object.keys(clients);
 
             for (let i = 0; i < allClients.length; i++) {
-                // if (allClients[i] !== pdata.from) {
+                if (allClients[i] !== pdata.sender) {
                     // console.log(`Sending message from ${pdata.sender} to ${allClients[i]}`)
                     try {
                         clients[allClients[i]].send(data);
                     } catch (error) {
                         console.log(`error sending to ${allClients[i]}`, error.message)
                     }
-                // }
+                }
             };
         }
         this.send = sendMessage;

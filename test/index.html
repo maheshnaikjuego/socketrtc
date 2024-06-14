@@ -83,7 +83,7 @@
             // console.log(message)
             const { sender, message } = JSON.parse(data);
             // Display the message if it's from another peer
-            if(message && sender !== id)
+            // if(message && sender !== id)
                 displayMessage(sender, message)
         }
 
