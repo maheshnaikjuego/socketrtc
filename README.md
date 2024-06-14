@@ -1,6 +1,6 @@
-# SocketRTC
+# socket.iortc
 
-SocketRTC is a library that combines WebRTC and Socket.IO to facilitate real-time communication. This library uses UDP protocol for data transfer using WebRTC ensuring low-latency and efficient communication. 
+socket.iortc is a library that combines WebRTC and Socket.IO to facilitate real-time communication. This library uses UDP protocol for data transfer using WebRTC ensuring low-latency and efficient communication. 
 
 This library provides an interface identical to Socket.IO, making it easy for users familiar with socket.io to use.
 
@@ -18,11 +18,11 @@ This library provides an interface identical to Socket.IO, making it easy for us
 First, ensure you have Node.js installed. Then, install the package as shown below
 
 ```shell
-npm install socket-rtc
+npm install socket.iortc
 ```
 This package works in the browser with [browserify](https://browserify.org). 
 <!-- If you do not use a bundler, you can use the `socket-rtc.min.js` standalone script
-directly in a `<script>` tag. This exports a `SocketRTC` constructor on
+directly in a `<script>` tag. This exports a `socket.iortc` constructor on
 `window`. -->
 # Usage
 ## Server
@@ -32,7 +32,7 @@ directly in a `<script>` tag. This exports a `SocketRTC` constructor on
 const express = require('express');
 const http = require('http');
 const path = require('path');
-const SocketRTC = require('socket-rtc');
+const SocketRTC = require('socket.iortc');
 
 const PORT = 8002;
 
@@ -70,7 +70,7 @@ Bundle the js file using browserify or any other bundler.
 npm install -g browserify
 ```
 ```js
-const SocketRTC = require('socket-rtc');
+const SocketRTC = require('socket.iortc');
 
 let rtc = null;
 
