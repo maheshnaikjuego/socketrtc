@@ -63,15 +63,29 @@ server.listen(PORT, () => {
 ```
 
 ## Client
-Bundle the js file using browserify or any other bundler.
+Copy the `socketiortc.min.js` and paste it in project folder.
 
-- Install `browserify`
-```shell
-npm install -g browserify
+
+-  Include the minified file in your HTML file.
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocketRTC</title>
+    <script src="./socketiortc.min.js"></script>
+</head>
+<body>
+    <h1>SocketRTC Client</h1>
+    <script src="index.js"></script>
+</body>
+</html>
+
 ```
-```js
-const SocketRTC = require('socket.iortc');
 
+`index.js`
+```js
 let rtc = null;
 
 rtc = new SocketRTC({ url: 'http://localhost:8002' });
@@ -94,26 +108,6 @@ rtc.on('error', (err) => {
 
 ```
 
-- Bundle your JavaScript with Browserify: Use Browserify to bundle your JavaScript file so that it can be used in the browser.
-```shell
-browserify main.js -o bundle.js
-```
--  Include the bundled JavaScript file in your HTML file.
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SocketRTC</title>
-</head>
-<body>
-    <h1>SocketRTC Client</h1>
-    <script src="bundle.js"></script>
-</body>
-</html>
-
-```
 
 
 # Use Case
